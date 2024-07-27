@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Home - Smart Class Scheduler</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f4f4f4;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #2c3e50;
+        color: #fff;
+        padding: 1rem 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+      }
+
+      #student-name {
+        margin-right: 1rem;
+      }
+
+      #logout-btn {
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      section {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        color: #2c3e50;
+      }
+
+      #timetable-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem;
+      }
+
+      .timetable-day {
+        background-color: #ecf0f1;
+        padding: 1rem;
+        border-radius: 5px;
+      }
+
+      .timetable-day h3 {
+        margin-bottom: 0.5rem;
+        color: #34495e;
+      }
+
+      .timetable-slot {
+        background-color: #3498db;
+        color: #fff;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        border-radius: 3px;
+      }
+
+      #notifications-container {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .notification {
+        background-color: #f8f9fa;
+        border-left: 4px solid #3498db;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 3px;
+      }
+
+      .notification h4 {
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+      }
+
+      .notification p {
+        color: #7f8c8d;
+      }
+
+      #attendance-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+
+      .attendance-card {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+      }
+
+      .attendance-card h4 {
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+      }
+
+      .attendance-percentage {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #3498db;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Smart Class Scheduler</div>
+      <div class="user-info">
+        <span id="student-name">Welcome, Student</span>
+        <button id="logout-btn">Logout</button>
+      </div>
+    </nav>
+
+    <main>
+      <section id="timetable">
+        <h2>Your Timetable</h2>
+        <div id="timetable-container"></div>
+      </section>
+
+      <section id="notifications">
+        <h2>Notifications</h2>
+        <div id="notifications-container"></div>
+      </section>
+
+      <section id="attendance">
+        <h2>Your Attendance</h2>
+        <div id="attendance-container"></div>
+      </section>
+    </main>
+    <script>
+      const timetableData = [
+        {
+          day: "Monday",
+          slots: ["CD 9:00 AM", "BDA 11:00 AM", "SEO 2:00 PM"],
+        },
+        { day: "Tuesday", slots: ["FCL 10:00 AM", "SS 1:00 PM"] },
+        {
+          day: "Wednesday",
+          slots: ["CD 9:00 AM", "CP3 11:00 AM", "BDA 2:00 PM"],
+        },
+        { day: "Thursday", slots: ["CD 10:00 AM", "BDA 1:00 PM"] },
+        {
+          day: "Friday",
+          slots: ["FCL 9:00 AM", "SEO 11:00 AM", "CP3 2:00 PM"],
+        },
+      ];
+
+      const notificationsData = [
+        {
+          title: "Exam Schedule Posted",
+          message:
+            "The final exam schedule has been posted. Please check your student portal for details.",
+        },
+        {
+          title: "Library Hours Extended",
+          message:
+            "The library will have extended hours during the exam period. Open until midnight starting next week.",
+        },
+        {
+          title: "Guest Lecture: AI in Education",
+          message:
+            "Don't miss the guest lecture on AI in Education this Friday at 3 PM in the main auditorium.",
+        },
+      ];
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderTimetable();
+        renderNotifications();
+        setupLogout();
+      });
+
+      function renderTimetable() {
+        const timetableContainer = document.getElementById(
+          "timetable-container"
+        );
+        timetableContainer.innerHTML = timetableData
+          .map(
+            (day) => `
+        <div class="timetable-day">
+            <h3>${day.day}</h3>
+            ${day.slots
+              .map((slot) => `<div class="timetable-slot">${slot}</div>`)
+              .join("")}
+        </div>
+    `
+          )
+          .join("");
+      }
+
+      function renderNotifications() {
+        const notificationsContainer = document.getElementById(
+          "notifications-container"
+        );
+        const announcements =
+          JSON.parse(localStorage.getItem("announcements")) || [];
+        notificationsContainer.innerHTML = announcements
+          .map(
+            (announcement) => `
+        <div class="notification">
+            <h4>${announcement.title}</h4>
+            <p>${announcement.message}</p>
+            <small>${new Date(announcement.date).toLocaleString()}</small>
+        </div>
+    `
+          )
+          .join("");
+      }
+
+      function setupLogout() {
+        const logoutBtn = document.getElementById("logout-btn");
+        logoutBtn.addEventListener("click", () => {
+          // In a real application, you would implement proper logout functionality here
+          alert("Logout functionality would be implemented here.");
+          // Redirect to login page or perform other logout actions
+        });
+      }
+
+      function renderAttendance() {
+        const attendanceContainer = document.getElementById(
+          "attendance-container"
+        );
+        const attendanceData =
+          JSON.parse(localStorage.getItem("attendance")) || {};
+        const studentId = "student123"; // This should be dynamically set based on the logged-in student
+
+        attendanceContainer.innerHTML = "";
+        for (const course in attendanceData) {
+          if (attendanceData[course][studentId]) {
+            const attended = attendanceData[course][studentId].attended;
+            const total = attendanceData[course][studentId].total;
+            const percentage = ((attended / total) * 100).toFixed(2);
+
+            const attendanceCard = document.createElement("div");
+            attendanceCard.className = "attendance-card";
+            attendanceCard.innerHTML = `
+              <h4>${course}</h4>
+              <p>Attended: ${attended} / ${total}</p>
+              <p class="attendance-percentage">${percentage}%</p>
+            `;
+            attendanceContainer.appendChild(attendanceCard);
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderTimetable();
+        renderNotifications();
+        renderAttendance();
+        setupLogout();
+      });
+    </script>
+  </body>
+</html>

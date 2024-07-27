@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Scheduler</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #1a1a1a;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        width: 95%;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin: 0;
+      }
+
+      .sign-up-link {
+        color: #ffffff;
+        text-decoration: none;
+        margin-left: 15px;
+      }
+
+      main {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        display: flex;
+        background-color: #242424;
+        border-radius: 10px;
+        overflow: hidden;
+        width: 95%;
+      }
+
+      .left-panel,
+      .right-panel {
+        padding: 40px;
+        width: 50%;
+      }
+
+      .left-panel {
+        background-color: #2a2a2a;
+      }
+
+      h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      p {
+        color: #b0b0b0;
+        margin-bottom: 20px;
+        text-align: center;
+        margin-top: 5px;
+      }
+
+      .image-container {
+        background-color: #ffffff;
+        border-radius: 50%;
+        width: 320px;
+        height: 320px;
+        margin: 20px auto;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      input, select {
+        margin-bottom: 15px;
+        padding: 12px;
+        border: none;
+        background-color: #333333;
+        color: white;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .right-panel #para {
+        margin-top: 15px;
+      }
+
+      button[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .social-login {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .social-login button {
+        width: 48%;
+        color: white;
+      }
+
+      .login-button,
+      .signup-button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4caf50;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .login-button:hover,
+      .signup-button:hover {
+        background-color: #45a049;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          width: 95%;
+        }
+
+        .left-panel,
+        .right-panel {
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Smart Class</h1>
+      <a href="login.html" class="sign-up-link"
+        >Already have an account? Log in.</a
+      >
+    </header>
+    <main>
+      <div class="container">
+        <section class="left-panel">
+          <h2>Choose your courses and activities</h2>
+          <p>Optimize your schedule with SmartSchedule</p>
+          <div class="image-container">
+            <img src="./img/img1.jpg" alt="" srcset="" />
+          </div>
+          <p>Effortlessly manage your schedule online.</p>
+        </section>
+        <section class="right-panel">
+          <h2>Get started with</h2>
+          <p>Unlock powerful scheduling tools for free.</p>
+          <form>
+            <input type="text" placeholder="Enrollment No" />
+            <input type="text" placeholder="Name" />
+            <input type="text" placeholder="Class Batch" />
+            <input type="date" placeholder="Date of Birth" />
+            <input type="tel" placeholder="Contact No" />
+            <select>
+              <option value="" disabled selected>Hosteller/Commuter</option>
+              <option value="hosteller">Hosteller</option>
+              <option value="commuter">Commuter</option>
+            </select>
+            <input type="text" placeholder="Blood Group" />
+            <input type="text" placeholder="Program" />
+            <select>
+              <option value="" disabled selected>Shift</option>
+              <option value="morning">Morning</option>
+              <option value="evening">Evening</option>
+            </select>
+            <input type="text" placeholder="Branch" />
+            <input type="password" placeholder="Password" />
+            <input type="password" placeholder="Confirm Password" />
+            <button type="submit">Sign up</button>
+          </form>
+          <p id="para">Already have an account?</p>
+          <div class="social-login">
+            <a href="login.html" class="login-button">Login</a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
